@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENJO — Supplier Meeting Prep | إنجو — تحضير لقاء الموردين</title>
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-decor" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <img src="assets/img/logo-teal.png" alt="ENJO" class="brand-mark">
+      <div class="brand-name">
+        <span class="brand-en">ENJO</span>
+      </div>
+    </div>
+    <button id="langToggle" class="lang-toggle" type="button">
+      <span class="lang-toggle-label">العربية</span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO / INTRO SCREEN -->
+  <section id="hero" class="screen hero-screen active">
+    <div class="hero-inner">
+      <h1 data-i18n="hero_title"></h1>
+      <p class="hero-sub" data-i18n="hero_sub"></p>
+
+      <ul class="hero-points">
+        <li>
+          <span class="point-icon">✓</span>
+          <span data-i18n="hero_point_1"></span>
+        </li>
+        <li>
+          <span class="point-icon">✓</span>
+          <span data-i18n="hero_point_2"></span>
+        </li>
+        <li>
+          <span class="point-icon">✓</span>
+          <span data-i18n="hero_point_3"></span>
+        </li>
+      </ul>
+
+      <button id="startBtn" class="btn btn-primary btn-large" type="button">
+        <span data-i18n="hero_cta"></span>
+      </button>
+
+      <p class="hero-meta" data-i18n="hero_meta"></p>
+    </div>
+  </section>
+
+  <!-- FORM WIZARD SCREEN -->
+  <section id="wizard" class="screen wizard-screen">
+    <div class="wizard-inner">
+
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span id="stepLabel"></span>
+        </div>
+        <div class="progress-track">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+      </div>
+
+      <form id="supplierForm" novalidate>
+        <div id="stepContainer" class="step-container"></div>
+
+        <div class="wizard-nav">
+          <button id="backBtn" type="button" class="btn btn-ghost" data-i18n="nav_back"></button>
+          <button id="nextBtn" type="button" class="btn btn-primary" data-i18n="nav_next"></button>
+          <button id="submitBtn" type="submit" class="btn btn-primary" data-i18n="nav_submit" style="display:none;"></button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- THANK YOU SCREEN -->
+  <section id="thanks" class="screen thanks-screen">
+    <div class="thanks-inner">
+      <img src="assets/img/logo-teal.png" alt="ENJO" class="thanks-mark">
+      <h1 data-i18n="thanks_title"></h1>
+      <p data-i18n="thanks_sub"></p>
+      <p class="thanks-signoff" data-i18n="thanks_signoff"></p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p data-i18n="footer_tagline"></p>
+  <p class="footer-contact">emad@enjoapp.com</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
