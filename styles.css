@@ -120,16 +120,8 @@ body.lang-ar p, body.lang-ar li, body.lang-ar label { line-height: 1.85; }
   align-items: center;
   justify-content: space-between;
 }
-.brand { display: flex; align-items: center; gap: 12px; }
-.brand-mark { width: 50px; height: 50px; }
-.brand-name { display: flex; flex-direction: column; justify-content: center; line-height: 1; }
-.brand-en {
-  font-family: var(--font-en);
-  font-weight: 800;
-  font-size: 21px;
-  color: var(--enjo-darkteal);
-  letter-spacing: 0.5px;
-}
+.brand { display: flex; align-items: center; }
+.brand-mark { width: 72px; height: 72px; }
 .lang-toggle {
   border: 1.5px solid var(--enjo-teal);
   background: transparent;

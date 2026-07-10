@@ -54,10 +54,10 @@ const CONFIG = {
 
 /* ===== i18n: static UI strings ===== */
 const I18N = {
-  hero_title: { en: "A few details before we meet", ar: "بضع معلومات قبل ما نلتقي" },
+  hero_title: { en: "A few details before we meet", ar: "جمع بعض البيانات قبل اللقاء" },
   hero_sub: {
-    en: "Help us prepare a focused, useful meeting for your business. Takes about 3 minutes.",
-    ar: "ساعدنا نحضّر لقاء مركّز ومفيد لعملكم. بياخد حوالي 3 دقائق."
+    en: "Help us prepare a focused, useful meeting for your business.",
+    ar: "ساعدنا نحضّر لقاء مركّز ومفيد لعملكم."
   },
   hero_point_1: { en: "Helps us prepare specifically for your business", ar: "بساعدنا نحضّر خصيصاً لعملكم" },
   hero_point_2: { en: "About 3 minutes, in short steps", ar: "حوالي 3 دقائق، على خطوات قصيرة" },
@@ -148,8 +148,8 @@ const REVENUE_OPTIONS = [
 
 const BOOKING_OPTIONS = [
   { value: "yes", en: "Yes, we take online bookings/payments", ar: "نعم، نستقبل حجوزات ومدفوعات أونلاين" },
-  { value: "no", en: "No, not yet", ar: "لا، مش لسا" },
-  { value: "planning", en: "Planning to, soon", ar: "بنخطط لهيك قريباً" }
+  { value: "no", en: "No, not yet", ar: "لا" },
+  { value: "planning", en: "Planning to, soon", ar: "نخطط قريباً" }
 ];
 
 const LISTED_OPTIONS = [
@@ -171,7 +171,7 @@ const STEPS = [
   {
     id: "basics",
     title: { en: "Company basics", ar: "نبذة عن الشركة" },
-    subtitle: { en: "The essentials — who you are and what you do", ar: "الأساسيات — مين انتوا وشو بتقدّموا" },
+    subtitle: { en: "", ar: "" },
     fields: [
       { name: "companyName", type: "text", mandatory: true,
         label: { en: "Company / business name", ar: "اسم الشركة / النشاط" },
@@ -193,7 +193,7 @@ const STEPS = [
     subtitle: { en: "Helps us understand your scale", ar: "بساعدنا نفهم حجم عملكم" },
     fields: [
       { name: "yearsOperating", type: "chips-single", mandatory: true, options: YEARS_OPTIONS,
-        label: { en: "How long have you been operating?", ar: "من متى وانتوا شغالين؟" } },
+        label: { en: "How long have you been operating?", ar: "نعمل منذ:" } },
       { name: "companySize", type: "chips-single", mandatory: true, options: SIZE_OPTIONS,
         label: { en: "Company size", ar: "حجم الشركة" } },
       { name: "yearlyRevenue", type: "chips-single", mandatory: false, options: REVENUE_OPTIONS,
@@ -203,7 +203,7 @@ const STEPS = [
   },
   {
     id: "offering",
-    title: { en: "Your offering", ar: "شو بتقدّموا" },
+    title: { en: "Your offering", ar: "خدماتكم" },
     subtitle: { en: "The practical details we'll want to discuss", ar: "التفاصيل العملية اللي رح نحكي فيها" },
     fields: [
       { name: "avgTicket", type: "number-suffix", mandatory: true, suffix: { en: "JD", ar: "دينار" },
@@ -213,7 +213,7 @@ const STEPS = [
         label: { en: "Do you currently take online bookings or payments?", ar: "هل تستقبلوا حجوزات أو مدفوعات أونلاين حالياً؟" } },
       { name: "description", type: "textarea", mandatory: false,
         label: { en: "Briefly describe your experience(s) or services", ar: "وصف مختصر لتجاربكم أو خدماتكم" },
-        placeholder: { en: "What do you offer, and what makes it worth booking?", ar: "شو بتقدّموا، وشو يميزه؟" } }
+        placeholder: { en: "What do you offer, and what makes it worth booking?", ar: "خدماتكم، وشو يميزها؟" } }
     ]
   },
   {
@@ -231,14 +231,14 @@ const STEPS = [
   },
   {
     id: "contact",
-    title: { en: "Point of contact", ar: "الشخص المسؤول" },
-    subtitle: { en: "Who should we be speaking with?", ar: "مين اللي رح نحكي معه؟" },
+    title: { en: "Point of contact", ar: "معلومات جهة الاتصال" },
+    subtitle: { en: "", ar: "" },
     fields: [
       { name: "pocName", type: "text", mandatory: true, label: { en: "Full name", ar: "الاسم الكامل" } },
       { name: "pocTitle", type: "text", mandatory: true,
         label: { en: "Title / role", ar: "المسمى الوظيفي" },
         placeholder: { en: "e.g. Owner, Sales Manager", ar: "مثال: مالك، مدير مبيعات" } },
-      { name: "pocEmail", type: "email", mandatory: true, label: { en: "Email", ar: "البريد الإلكتروني" } },
+      { name: "pocEmail", type: "email", mandatory: false, label: { en: "Email", ar: "البريد الإلكتروني" } },
       { name: "pocPhone", type: "tel", mandatory: true,
         label: { en: "Phone number", ar: "رقم الهاتف" },
         placeholder: { en: "07XXXXXXXX", ar: "07XXXXXXXX" } }
@@ -259,7 +259,7 @@ const STEPS = [
 
 /* ===== State ===== */
 const state = {
-  lang: "en",
+  lang: "ar",
   stepIndex: 0,
   formData: {}
 };
@@ -306,10 +306,15 @@ function renderStep(index) {
   titleEl.textContent = step.title[state.lang];
   container.appendChild(titleEl);
 
-  const subEl = document.createElement("p");
-  subEl.className = "step-subtitle";
-  subEl.textContent = step.subtitle[state.lang];
-  container.appendChild(subEl);
+  const subtitleText = step.subtitle[state.lang];
+  if (subtitleText) {
+    const subEl = document.createElement("p");
+    subEl.className = "step-subtitle";
+    subEl.textContent = subtitleText;
+    container.appendChild(subEl);
+  } else {
+    titleEl.style.marginBottom = "24px";
+  }
 
   step.fields.forEach(field => {
     container.appendChild(renderField(field));
@@ -505,24 +510,31 @@ function validateStep(index) {
   let valid = true;
 
   step.fields.forEach(field => {
-    if (!field.mandatory) return;
-    const wrap = document.querySelector(`[data-field="${field.name}"]`);
     const value = fieldValue(field.name);
+    const isEmpty =
+      field.type === "chips-multi" ? !(Array.isArray(value) && value.length > 0) :
+      field.type === "checkbox" ? value !== true :
+      value === undefined || value === null || String(value).trim() === "";
 
+    // Optional fields only get validated (for format) when the supplier bothered to fill them in.
+    if (!field.mandatory && isEmpty) return;
+    if (!field.mandatory && field.type !== "email") return;
+
+    const wrap = document.querySelector(`[data-field="${field.name}"]`);
     let fieldValid = true;
     let message = t("err_required");
 
     if (field.type === "chips-multi") {
-      fieldValid = Array.isArray(value) && value.length > 0;
+      fieldValid = !isEmpty;
       message = t("err_select_one");
     } else if (field.type === "checkbox") {
-      fieldValid = value === true;
+      fieldValid = !isEmpty;
       message = t("err_consent");
     } else if (field.type === "email") {
-      fieldValid = !!value && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-      message = value ? t("err_email") : t("err_required");
+      fieldValid = isEmpty ? !field.mandatory : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+      message = isEmpty ? t("err_required") : t("err_email");
     } else {
-      fieldValid = value !== undefined && value !== null && String(value).trim() !== "";
+      fieldValid = !isEmpty;
     }
 
     if (!fieldValid) {
