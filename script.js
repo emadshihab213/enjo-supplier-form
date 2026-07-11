@@ -24,30 +24,28 @@
 
 const CONFIG = {
   GOOGLE_FORM: {
-    // Replace with your form's real "/formResponse" URL once created.
-    ACTION_URL: "REPLACE_ME_GOOGLE_FORM_ACTION_URL",
-    // Map each field name below to its Google Form entry.XXXXXXX id.
+    ACTION_URL: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSfDW_sy9ANf_ak7SxeTNjWxhmf-FwaBnNi0if0QWSHx1C6HMg/formResponse",
     ENTRY_IDS: {
-      companyName: "entry.REPLACE_ME",
-      website: "entry.REPLACE_ME",
-      city: "entry.REPLACE_ME",
-      industry: "entry.REPLACE_ME",
-      industryOther: "entry.REPLACE_ME",
-      yearsOperating: "entry.REPLACE_ME",
-      companySize: "entry.REPLACE_ME",
-      yearlyRevenue: "entry.REPLACE_ME",
-      avgTicket: "entry.REPLACE_ME",
-      onlineBooking: "entry.REPLACE_ME",
-      description: "entry.REPLACE_ME",
-      listedOn: "entry.REPLACE_ME",
-      listedOnOther: "entry.REPLACE_ME",
-      instagram: "entry.REPLACE_ME",
-      pocName: "entry.REPLACE_ME",
-      pocTitle: "entry.REPLACE_ME",
-      pocEmail: "entry.REPLACE_ME",
-      pocPhone: "entry.REPLACE_ME",
-      notes: "entry.REPLACE_ME",
-      consent: "entry.REPLACE_ME"
+      companyName: "entry.1992013497",
+      website: "entry.2117457459",
+      city: "entry.1800575829",
+      industry: "entry.573088288",
+      industryOther: "entry.1427088641",
+      yearsOperating: "entry.1899295035",
+      companySize: "entry.1978914273",
+      yearlyRevenue: "entry.228664756",
+      avgTicket: "entry.1043074619",
+      onlineBooking: "entry.1162483026",
+      description: "entry.1079840838",
+      listedOn: "entry.527456111",
+      listedOnOther: "entry.1328662318",
+      instagram: "entry.1598066530",
+      pocName: "entry.924346172",
+      pocTitle: "entry.191750984",
+      pocEmail: "entry.820711629",
+      pocPhone: "entry.802738163",
+      notes: "entry.75709612",
+      consent: "entry.1991151263"
     }
   }
 };
@@ -256,6 +254,12 @@ const STEPS = [
     ]
   }
 ];
+
+/* Lookup of every field's config by name, so submission can translate a
+   stored option code (e.g. "amman") into the exact English choice text
+   (e.g. "Amman") that a real Google Form question expects. */
+const FIELD_INDEX = {};
+STEPS.forEach(step => step.fields.forEach(field => { FIELD_INDEX[field.name] = field; }));
 
 /* ===== State ===== */
 const state = {
@@ -549,6 +553,21 @@ function validateStep(index) {
 }
 
 /* ===== Submission ===== */
+// Google Form choice questions (dropdown/multiple-choice/checkboxes) only
+// accept the exact visible option text, not our internal short codes — so
+// codes like "amman" or "fnb" get translated to "Amman" / "Food & Beverage"
+// here, regardless of which UI language the supplier filled the form in.
+function toGoogleFormValue(fieldName, code) {
+  const field = FIELD_INDEX[fieldName];
+  if (!field) return code;
+  // A consent checkbox in a real Google Form is a Checkboxes question whose
+  // single option IS the agreement sentence — so submit that sentence, not "true".
+  if (field.type === "checkbox") return field.label.en;
+  if (!field.options) return code;
+  const opt = field.options.find(o => o.value === code);
+  return opt ? opt.en : code;
+}
+
 function buildGoogleFormBody() {
   const params = new URLSearchParams();
   const ids = CONFIG.GOOGLE_FORM.ENTRY_IDS;
@@ -559,9 +578,9 @@ function buildGoogleFormBody() {
     if (value === undefined || value === null || value === "") return;
 
     if (Array.isArray(value)) {
-      value.forEach(v => params.append(entryId, v));
+      value.forEach(v => params.append(entryId, toGoogleFormValue(fieldName, v)));
     } else {
-      params.append(entryId, String(value));
+      params.append(entryId, toGoogleFormValue(fieldName, String(value)));
     }
   });
 
